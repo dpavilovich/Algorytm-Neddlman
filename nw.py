@@ -1,7 +1,7 @@
 import sys
 
 def read_fasta(file_path):
-    """Wczytuje plik FASTA i zwraca dwie sekwencje."""
+    
     sequences = []
     with open(file_path, 'r') as file:
         for line in file:
@@ -13,12 +13,12 @@ def read_fasta(file_path):
     return sequences[0], sequences[1]
 
 def needleman_wunsch(seq1, seq2, match_score=1, mismatch_score=-1, gap_penalty=-1):
-    """Implementuje algorytm Needleman-Wunsch do globalnego dopasowania sekwencji."""
-    # Inicjalizacja macierzy punktacji
+   
+    
     n, m = len(seq1), len(seq2)
     score_matrix = [[0] * (m + 1) for _ in range(n + 1)]
 
-    # Wypełnienie macierzy punktacji
+   
     for i in range(1, n + 1):
         score_matrix[i][0] = i * gap_penalty
     for j in range(1, m + 1):
@@ -31,7 +31,7 @@ def needleman_wunsch(seq1, seq2, match_score=1, mismatch_score=-1, gap_penalty=-
             insert = score_matrix[i][j - 1] + gap_penalty
             score_matrix[i][j] = max(match, delete, insert)
 
-    # Śledzenie ścieżki, aby uzyskać dopasowanie
+    
     align1, align2 = '', ''
     i, j = n, m
     while i > 0 and j > 0:
@@ -66,7 +66,7 @@ def needleman_wunsch(seq1, seq2, match_score=1, mismatch_score=-1, gap_penalty=-
     return align1, align2
 
 def calculate_identity_percentage(align1, align2):
-    """Oblicza procent identyczności na podstawie dopasowania."""
+    
     matches = sum(1 for a, b in zip(align1, align2) if a == b)
     return (matches / len(align1)) * 100
 
@@ -79,10 +79,10 @@ if __name__ == "__main__":
     seq1, seq2 = read_fasta(fasta_path)
     alignment = needleman_wunsch(seq1, seq2)
 
-    # Obliczanie procentu identyczności
+   
     identity_percentage = calculate_identity_percentage(alignment[0], alignment[1])
 
-    # Zapisanie dopasowania i procentu identyczności do pliku wyjściowego
+    
     with open("alignment_output.txt", 'w') as output_file:
         output_file.write(f"Dopasowanie:\n{alignment[0]}\n{alignment[1]}\n")
         output_file.write(f"Procent identyczności: {identity_percentage:.2f}%\n")
